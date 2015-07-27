@@ -7,6 +7,8 @@ var cookieParser = require('cookie-parser');
 var bodyParser = require('body-parser');
 var db = require('monk')(process.env.MONGOLAB_URI);
 var cookieSession = require('cookie-session');
+var passport = require('passport');
+var GithubStrategy = require('passport-github').Strategy;
 
 var routes = require('./routes/index');
 var users = require('./routes/users');
@@ -31,12 +33,62 @@ app.use(cookieSession({
   name: 'session',
   keys: process.env.SESSION_KEYS.split(',')
 }));
+
+app.use(passport.initialize());
+app.use(passport.session());
+passport.use(new GithubStrategy({
+  clientID: process.env.GITHUB_CLIENT_ID,
+  clientSecret: process.env.GITHUB_CLIENT_SECRET,
+  callbackURL: process.env.HOST + '/auth/callback'
+}, function(accessToken, refreshToken, profile, done){
+  done(null, {
+    accessToken: accessToken,
+    profile: profile
+  });
+}));
+passport.serializeUser(function(user, done) {
+  // for the time being tou can serialize the user
+  // object {accessToken: accessToken, profile: profile }
+  // In the real app you might be storing on the id like user.profile.id
+  done(null, user);
+});
+
+passport.deserializeUser(function(user, done) {
+  // If you are storing the whole user on session we can just pass to the done method,
+  // But if you are storing the user id you need to query your db and get the user
+  //object and pass to done()
+  done(null, user);
+});
+
 // Add db to req
 app.use(function(req,res,next){
   req.db = db;
   next();
 });
 
+app.use(function (req, res, next) {
+  res.locals.user = req.session;
+  next();
+})
+
+app.get('/login', passport.authenticate('github'));
+app.get('/auth/callback',
+  passport.authenticate('github', {failureRedirect: '/auth/error'}), function (req, res, next) {
+    var adminUsers = ['silasmartinez']
+    //console.log(req.user);
+    req.session.name = req.user.profile.displayName;
+    req.session.username = req.user.profile.username;
+    if (adminUsers.indexOf(req.user.profile.username) >= 0 ) {
+      req.session.isAdmin = 1;
+    }
+
+    res.redirect('/');
+  }
+);
+app.get('/logout', function (req, res, next) {
+  req.session = null;
+  res.redirect('/');
+})
 app.use('/', routes);
 app.use('/users', users);
 
