@@ -2,12 +2,24 @@
 <p>Welcome to {{title}}</p>
 
 <div class="main">
-{{#repos}}
-    <div class="box">
-        {{name}}
-        <div>
-            {{description}}
-        </div>
-    </div>
-{{/repos}}
+
+    {{#repos}}
+        {{#if visible}}
+            <div class="box">
+                {{name}}
+                <div>
+                    {{description}}
+                </div>
+                {{#if localNotes}}
+                    <div>
+                        {{localNotes}}
+                    </div>
+                {{/if}}
+                {{#if npm}}
+                    See it on <a target="_blank" href="https://www.npmjs.com/package/{{name}}">npm</a>!
+                {{/if}}
+            </div>
+        {{/if}}
+    {{/repos}}
+
 </div>

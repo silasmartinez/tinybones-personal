@@ -9,9 +9,11 @@ var db = require('monk')(process.env.MONGOLAB_URI);
 var cookieSession = require('cookie-session');
 var passport = require('passport');
 var GithubStrategy = require('passport-github').Strategy;
+var authorized = require('./lib/authorized');
 
 var routes = require('./routes/index');
 var users = require('./routes/users');
+var repos = require('./routes/repos');
 
 var app = express();
 
@@ -54,9 +56,7 @@ passport.serializeUser(function(user, done) {
 });
 
 passport.deserializeUser(function(user, done) {
-  // If you are storing the whole user on session we can just pass to the done method,
-  // But if you are storing the user id you need to query your db and get the user
-  //object and pass to done()
+  // Really should clean this up
   done(null, user);
 });
 
@@ -75,13 +75,11 @@ app.get('/login', passport.authenticate('github'));
 app.get('/auth/callback',
   passport.authenticate('github', {failureRedirect: '/auth/error'}), function (req, res, next) {
     var adminUsers = ['silasmartinez']
-    //console.log(req.user);
     req.session.name = req.user.profile.displayName;
     req.session.username = req.user.profile.username;
     if (adminUsers.indexOf(req.user.profile.username) >= 0 ) {
       req.session.isAdmin = 1;
     }
-
     res.redirect('/');
   }
 );
@@ -89,8 +87,10 @@ app.get('/logout', function (req, res, next) {
   req.session = null;
   res.redirect('/');
 })
+
 app.use('/', routes);
 app.use('/users', users);
+app.use('/repos', repos);
 
 // catch 404 and forward to error handler
 app.use(function (req, res, next) {

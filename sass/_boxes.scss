@@ -1,10 +1,15 @@
 .box {
-  width: 200px;
+  width: 300px;
   float: left;
   border: 2px solid black;
   padding: 3px;
   margin: 1px;
   div {
     border-top: 1px solid grey;
+  }
+}
+.admin {
+  a {
+    font-size: smaller;
   }
 }

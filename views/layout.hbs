@@ -10,9 +10,13 @@
         <nav>
             <div>{{#if user.name}}
                 {{user.name}}
+                {{#if user.isAdmin}}
+                    <a href="/repos/admin">Settings</a>
+                    <a href="/repos">Main</a>
+                {{/if}}
                 <a href="/logout">Logout</a>
-            {{else}}
-                <a href="/login">Log in with GitHub</a>
+            {{else}}Admin?
+                <a href="/login">GitHub Login</a>
             {{/if}}</div>
         </nav>
     </header>
