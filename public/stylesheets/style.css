@@ -101,6 +101,8 @@ header {
   margin: 1px; }
   .box div {
     border-top: 1px solid grey; }
+  .box .links div {
+    border-top: none; }
 
 .admin a {
   font-size: smaller; }

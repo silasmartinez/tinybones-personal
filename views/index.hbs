@@ -15,9 +15,17 @@
                         {{localNotes}}
                     </div>
                 {{/if}}
-                {{#if npm}}
-                    See it on <a target="_blank" href="https://www.npmjs.com/package/{{name}}">npm</a>!
-                {{/if}}
+                <div class="links">
+                    <div>
+                        {{#if npm}}
+                            See it on <a target="_blank" href="https://www.npmjs.com/package/{{name}}">npm</a>!
+                        {{/if}}
+                    </div>
+                    <div>
+                        <a target="_blank" href="{{html_url}}">GitHub</a>
+                    </div>
+                </div>
+
             </div>
         {{/if}}
     {{/repos}}

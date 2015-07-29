@@ -1,9 +1,10 @@
 var express = require('express');
 var router = express.Router();
 var axios = require('axios');
-var authorized = require('../lib/authorized');
+var wroth = require('wroth');
 
-/* GET home page. */
+var admin = wroth.sessionHas('isAdmin', '/')
+
 router.get('/', function (req, res, next) {
   var db = req.db;
   var localRepos = db.get('repositories');
@@ -14,7 +15,7 @@ router.get('/', function (req, res, next) {
   )
 });
 
-router.get('/admin', authorized.validUser(), function (req, res, next) {
+router.get('/admin', admin(), function (req, res, next) {
   var db = req.db;
   var localRepos = db.get('repositories');
   var getLocalRepos = localRepos.find({})
@@ -24,7 +25,7 @@ router.get('/admin', authorized.validUser(), function (req, res, next) {
   )
 })
 
-router.get('/:id/edit', authorized.validUser(), function (req, res, next) {
+router.get('/:id/edit', admin(), function (req, res, next) {
   var localRepos = req.db.get('repositories');
   localRepos.findById(req.params.id)
     .then(function (doc) {
@@ -32,7 +33,7 @@ router.get('/:id/edit', authorized.validUser(), function (req, res, next) {
     })
 })
 
-router.post('/:id/update', authorized.validUser(), function (req, res, next) {
+router.post('/:id/update', admin(), function (req, res, next) {
   var dbUpdates = [];
   var localRepos = req.db.get('repositories');
   console.log(req.body)
@@ -53,11 +54,11 @@ router.post('/:id/update', authorized.validUser(), function (req, res, next) {
   }
   Promise.all(dbUpdates)
     .then(function () {
-      res.redirect('/repos');
+      res.redirect('/repos/admin');
     })
 })
 
-router.get('/reset', authorized.validUser(), function (req, res, next) {
+router.get('/reset', admin(), function (req, res, next) {
   var localRepos = req.db.get('repositories');
 
   localRepos.remove({})
@@ -79,7 +80,7 @@ router.get('/reset', authorized.validUser(), function (req, res, next) {
             })
             Promise.all(inserts)
               .then(function () {
-                res.redirect('/repos');
+                res.redirect('/repos/admin');
               })
           })
         })
