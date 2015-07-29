@@ -9,7 +9,6 @@ var db = require('monk')(process.env.MONGOLAB_URI);
 var cookieSession = require('cookie-session');
 var passport = require('passport');
 var GithubStrategy = require('passport-github').Strategy;
-var authorized = require('./lib/authorized');
 
 var routes = require('./routes/index');
 var users = require('./routes/users');
