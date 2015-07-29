@@ -21,7 +21,7 @@ app.set('views', path.join(__dirname, 'views'));
 app.set('view engine', 'hbs');
 
 // uncomment after placing your favicon in /public
-// app.use(favicon(path.join(__dirname, 'public', 'favicon.ico')));
+app.use(favicon(path.join(__dirname, 'public', 'favicon.ico')));
 app.use(logger('dev'));
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: false }));
@@ -37,30 +37,31 @@ app.use(cookieSession({
 
 app.use(passport.initialize());
 app.use(passport.session());
+
 passport.use(new GithubStrategy({
   clientID: process.env.GITHUB_CLIENT_ID,
   clientSecret: process.env.GITHUB_CLIENT_SECRET,
   callbackURL: process.env.HOST + '/auth/callback'
-}, function(accessToken, refreshToken, profile, done){
+}, function (accessToken, refreshToken, profile, done) {
   done(null, {
     accessToken: accessToken,
     profile: profile
   });
 }));
-passport.serializeUser(function(user, done) {
+passport.serializeUser(function (user, done) {
   // for the time being tou can serialize the user
   // object {accessToken: accessToken, profile: profile }
   // In the real app you might be storing on the id like user.profile.id
   done(null, user);
 });
 
-passport.deserializeUser(function(user, done) {
+passport.deserializeUser(function (user, done) {
   // Really should clean this up
   done(null, user);
 });
 
 // Add db to req
-app.use(function(req,res,next){
+app.use(function (req, res, next) {
   req.db = db;
   next();
 });
@@ -68,24 +69,27 @@ app.use(function(req,res,next){
 app.use(function (req, res, next) {
   res.locals.user = req.session;
   next();
-})
+});
 
 app.get('/login', passport.authenticate('github'));
 app.get('/auth/callback',
   passport.authenticate('github', {failureRedirect: '/auth/error'}), function (req, res, next) {
-    var adminUsers = ['silasmartinez']
+    var adminUsers = ['silasmartinez'];
     req.session.name = req.user.profile.displayName;
     req.session.username = req.user.profile.username;
-    if (adminUsers.indexOf(req.user.profile.username) >= 0 ) {
+    if (adminUsers.indexOf(req.user.profile.username) >= 0) {
       req.session.isAdmin = 1;
     }
     res.redirect('/');
   }
 );
+app.get('/auth/err', function (res, req, next) {
+  res.render('error', res.body);
+});
 app.get('/logout', function (req, res, next) {
   req.session = null;
   res.redirect('/');
-})
+});
 
 app.use('/', routes);
 app.use('/users', users);
