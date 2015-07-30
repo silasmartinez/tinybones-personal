@@ -9,7 +9,6 @@ router.get('/', function (req, res, next) {
   var localRepos = req.db.get('repositories');
   localRepos.find({})
     .then(function (docs) {
-      console.log(docs[0]);
       res.render('index', {repos: docs});
     }
   );
