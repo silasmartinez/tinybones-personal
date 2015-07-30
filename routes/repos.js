@@ -3,7 +3,7 @@ var router = express.Router();
 var axios = require('axios');
 var wroth = require('wroth');
 
-var admin = wroth.sessionHas('isAdmin', '/');
+var admin = wroth.sessionHas('username', '/');
 
 router.get('/', function (req, res, next) {
   var localRepos = req.db.get('repositories');
@@ -16,9 +16,9 @@ router.get('/', function (req, res, next) {
 
 router.get('/admin', admin(), function (req, res, next) {
   var localRepos = req.db.get('repositories');
-  localRepos.find({})
+  localRepos.find({'owner.login' : req.session.username})
     .then(function (docs) {
-      res.render('repos/admin', {repos: docs});
+      res.render('repos/admin', {username: req.session.username, repos: docs});
     }
   );
 });
@@ -34,7 +34,6 @@ router.get('/:id/edit', admin(), function (req, res, next) {
 router.post('/:id/update', admin(), function (req, res, next) {
   var dbUpdates = [];
   var localRepos = req.db.get('repositories');
-  console.log(req.body);
   if (req.body.npm) {
     dbUpdates.push(localRepos.updateById(req.params.id, {$set: {npm: 1}}));
   } else {
@@ -59,9 +58,9 @@ router.post('/:id/update', admin(), function (req, res, next) {
 router.get('/reset', admin(), function (req, res, next) {
   var localRepos = req.db.get('repositories');
 
-  localRepos.remove({})
+  localRepos.remove({'owner.login' : req.session.username })
     .then(function () {
-      axios.get('https://api.github.com/users/silasmartinez/repos')
+      axios.get('https://api.github.com/users/' + req.session.username + '/repos')
         .then(function (response) {
           localRepos.find({}, function (err, docs) {
             if (err) {
