@@ -1,12 +1,21 @@
 body p {
   padding: 10px;
 }
+
 .main {
-  max-width: 850px;
+  max-width: 740px;
+  padding: 10px;
   margin: 0 auto;
-  clear: both;
+  background-image: url("/images/coop.jpg");
+  border: 1px solid $dark;
+  border-radius: 4px;
 }
+
 a {
-  color: $dark;
+  color: $dark-muted;
   text-decoration: underline;
+}
+
+.clear {
+  clear: both;
 }

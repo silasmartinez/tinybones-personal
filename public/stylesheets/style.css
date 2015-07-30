@@ -99,16 +99,22 @@ body p {
   padding: 10px; }
 
 .main {
-  max-width: 850px;
+  max-width: 740px;
+  padding: 10px;
   margin: 0 auto;
-  clear: both; }
+  background-image: url("/images/coop.jpg");
+  border: 1px solid #664455;
+  border-radius: 4px; }
 
 a {
-  color: #664455;
+  color: #554455;
   text-decoration: underline; }
 
+.clear {
+  clear: both; }
+
 .box {
-  width: 300px;
+  width: 350px;
   float: left;
   border: 2px solid #664455;
   padding: 5px;
@@ -118,6 +124,7 @@ a {
   .box .project-name {
     border: 1px solid #554455;
     border-bottom: none;
+    font-size: larger;
     background: #aa9977;
     padding: 3px; }
   .box div {

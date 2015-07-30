@@ -1,5 +1,5 @@
 .box {
-  width: 300px;
+  width: 350px;
   float: left;
   border: 2px solid $dark;
   padding: 5px;
@@ -9,7 +9,7 @@
   .project-name {
     border: 1px solid $dark-muted;
     border-bottom: none;
-
+    font-size: larger;
     background: $brown;
     padding: 3px;
   }
