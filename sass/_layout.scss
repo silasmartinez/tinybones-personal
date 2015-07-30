@@ -1,4 +1,12 @@
+body p {
+  padding: 10px;
+}
 .main {
-  max-width: 800px;
+  max-width: 850px;
   margin: 0 auto;
+  clear: both;
+}
+a {
+  color: $dark;
+  text-decoration: underline;
 }

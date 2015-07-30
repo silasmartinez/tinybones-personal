@@ -6,18 +6,17 @@ var wroth = require('wroth');
 var admin = wroth.sessionHas('isAdmin', '/');
 
 router.get('/', function (req, res, next) {
-  var db = req.db;
-  var localRepos = db.get('repositories');
+  var localRepos = req.db.get('repositories');
   localRepos.find({})
     .then(function (docs) {
+      console.log(docs[0]);
       res.render('index', {repos: docs});
     }
   );
 });
 
 router.get('/admin', admin(), function (req, res, next) {
-  var db = req.db;
-  var localRepos = db.get('repositories');
+  var localRepos = req.db.get('repositories');
   localRepos.find({})
     .then(function (docs) {
       res.render('repos/admin', {repos: docs});

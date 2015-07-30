@@ -1,18 +1,34 @@
 .box {
   width: 300px;
   float: left;
-  border: 2px solid black;
+  border: 2px solid $dark;
   padding: 5px;
   margin: 1px;
+  background: lighten($tan-muted, 13%);
+  transition: all .5s ease-in-out;
+  .project-name {
+    border: 1px solid $dark-muted;
+    border-bottom: none;
+
+    background: $brown;
+    padding: 3px;
+  }
   div {
-    border-top: 1px solid grey;
+    border-top: 1px solid $dark-muted;
   }
   .links div {
     border-top: none;
   }
 }
+.box:hover {
+  transform: scale(1.5);
+}
 .admin {
   a {
     font-size: smaller;
   }
+}
+.shrink {
+  transition: all .5s ease-in-out;
+  transform: scale(.5);
 }

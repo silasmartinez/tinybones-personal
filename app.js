@@ -16,6 +16,12 @@ var repos = require('./routes/repos');
 
 var app = express();
 
+app.use(function (req, res, next) {
+  app.locals.title = 'tinybones';
+  app.locals.tagline = 'A collection of tiny bits and pieces..';
+  next();
+});
+
 // view engine setup
 app.set('views', path.join(__dirname, 'views'));
 app.set('view engine', 'hbs');
@@ -69,6 +75,17 @@ app.use(function (req, res, next) {
 app.use(function (req, res, next) {
   res.locals.user = req.session;
   next();
+});
+
+app.use(function (req, res, next) {
+  var localRepos = req.db.get('repositories');
+  localRepos.findOne({})
+    .then(function (doc) {
+      var myInfo = doc.owner;
+      res.locals.githubUrl = myInfo.html_url;
+      res.locals.myAvatar = myInfo.avatar_url;
+      next();
+    });
 });
 
 app.get('/login', passport.authenticate('github'));
