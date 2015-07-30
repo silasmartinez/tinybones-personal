@@ -21,7 +21,7 @@
   }
 }
 .box:hover {
-  transform: scale(1.5);
+  transform: scale(1.1);
 }
 .admin {
   a {
@@ -30,5 +30,5 @@
 }
 .shrink {
   transition: all .5s ease-in-out;
-  transform: scale(.5);
+  transform: scale(.9);
 }

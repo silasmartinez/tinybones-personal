@@ -133,11 +133,11 @@ a {
     border-top: none; }
 
 .box:hover {
-  transform: scale(1.5); }
+  transform: scale(1.1); }
 
 .admin a {
   font-size: smaller; }
 
 .shrink {
   transition: all 0.5s ease-in-out;
-  transform: scale(0.5); }
+  transform: scale(0.9); }
