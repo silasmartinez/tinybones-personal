@@ -13,6 +13,7 @@ var GithubStrategy = require('passport-github').Strategy;
 var routes = require('./routes/index');
 var users = require('./routes/users');
 var repos = require('./routes/repos');
+var api = require('./routes/api');
 
 var app = express();
 
@@ -111,6 +112,7 @@ app.get('/logout', function (req, res, next) {
 app.use('/', routes);
 app.use('/users', users);
 app.use('/repos', repos);
+app.use('/api', api);
 
 // catch 404 and forward to error handler
 app.use(function (req, res, next) {

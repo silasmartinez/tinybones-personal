@@ -7,35 +7,29 @@ var admin = wroth.sessionHas('username', '/');
 
 router.get('/', function (req, res, next) {
   var localRepos = req.db.get('repositories');
-  localRepos.find({})
+  localRepos.find({visible: {$exists: true}})
     .then(function (docs) {
-      res.render('index', {repos: docs});
+      res.json({repos: docs});
     }
   );
-});
-
-router.get('/app', function (req, res, next) {
-  res.render('repos/app');
 });
 
 router.get('/admin', admin(), function (req, res, next) {
   var localRepos = req.db.get('repositories');
   localRepos.find({'owner.login': req.session.username})
     .then(function (docs) {
-      res.render('repos/admin', {username: req.session.username, repos: docs});
+      res.json({username: req.session.username, repos: docs});
     }
   );
 });
 
-router.get('/:id/edit', admin(), function (req, res, next) {
-  var localRepos = req.db.get('repositories');
-  localRepos.findById(req.params.id)
-    .then(function (doc) {
-      res.render('repos/edit', doc);
-    });
+router.get('/profile', admin(), function (req, res, next) {
+  res.json({user: req.session});
 });
 
 router.post('/:id/update', admin(), function (req, res, next) {
+
+  console.log('Got request:', req.body)
   var dbUpdates = [];
   var localRepos = req.db.get('repositories');
   if (req.body.npm) {
@@ -59,10 +53,10 @@ router.post('/:id/update', admin(), function (req, res, next) {
     });
 });
 
-router.get('/reset', admin(), function (req, res, next) {
+router.post('/reset', admin(), function (req, res, next) {
   var localRepos = req.db.get('repositories');
 
-  localRepos.remove({'owner.login': req.session.username })
+  localRepos.remove({'owner.login': req.session.username})
     .then(function () {
       axios.get('https://api.github.com/users/' + req.session.username + '/repos')
         .then(function (response) {
