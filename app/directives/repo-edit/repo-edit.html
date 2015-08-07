@@ -1,0 +1,28 @@
+<div class="title">Editing visibility for project {{repos.name}}</div>
+<h3>{{repos.name}}</h3>
+
+<div>
+    {{repos.description}}
+</div>
+<form ng-controller="visibilityControl" ng-submit="submitForm()">
+    <div>
+        <label for="localNotes">Local Description <br/>
+            <textarea ng-model="formData.localNotes" cols="80" rows="10">{{repos.localNotes}}</textarea>
+        </label>
+    </div>
+    <div>
+        <label for="visible"> Make Visible?
+            <input ng-if="repos.visible" type="checkbox" ng-model="formData.visible" value="on" checked/>
+            <input ng-if="!repos.visible" type="checkbox" ng-model="formData.visible" value="on"/>
+        </label>
+    </div>
+    <div>
+        <label for="npm"> Link to NPM?
+            <input ng-if="repos.npm" type="checkbox" ng-model="formData.npm" value="on" checked/>
+            <input ng-if="!repos.npm" type="checkbox" ng-model="formData.npm" value="on"/>
+        </label>
+    </div>
+    <div>
+        <input type="submit" ng-click="Submit"/>
+    </div>
+</form>
