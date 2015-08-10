@@ -92,6 +92,7 @@ app.use(function (req, res, next) {
 app.get('/login', passport.authenticate('github'));
 app.get('/auth/callback',
   passport.authenticate('github', {failureRedirect: '/auth/error'}), function (req, res, next) {
+    console.log('foo')
     var adminUsers = ['silasmartinez'];
     req.session.name = req.user.profile.displayName;
     req.session.username = req.user.profile.username;
