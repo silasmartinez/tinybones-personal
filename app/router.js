@@ -3,7 +3,6 @@
  */
 
 export default ngModule => {
-
   ngModule.config(['$routeProvider',
     function ($routeProvider) {
       $routeProvider

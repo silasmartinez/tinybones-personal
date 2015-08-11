@@ -1,6 +1,7 @@
 /**
  * Created by silasmartinez on 8/3/15.
  */
+
 export default ngModule => {
   ngModule.directive('myHello', () => {
     require('./my-hello.css');

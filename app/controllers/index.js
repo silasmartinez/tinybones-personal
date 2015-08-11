@@ -7,5 +7,4 @@ export default ngModule => {
   require('./adminController')(ngModule);
   require('./profileController')(ngModule);
   require('./visibilityController')(ngModule);
-
 };

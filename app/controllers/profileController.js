@@ -1,6 +1,7 @@
 /**
  * Created by silasmartinez on 8/10/15.
  */
+
 export default ngModule => {
   ngModule.controller('ProfileController',
     function ($scope, userService) {
