@@ -28,8 +28,7 @@ router.get('/profile', admin(), function (req, res, next) {
 });
 
 router.post('/:id/update', admin(), function (req, res, next) {
-
-  console.log('Got request:', req.body)
+  console.log('Got request:', req.body);
   var dbUpdates = [];
   var localRepos = req.db.get('repositories');
   if (req.body.npm) {

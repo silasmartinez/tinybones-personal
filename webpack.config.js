@@ -1,4 +1,4 @@
-var webpack = require('webpack')
+var webpack = require('webpack');
 var config = {
   context: __dirname + '/app',
   entry: './index.js',
